@@ -1,0 +1,21 @@
+$border-radius: 0.5rem !default;
+$navbar-height: 60px !default;
+$border-width: 2px !default;
+$border-color: $black !default;
+
+@mixin metawall-logo {
+    font-family: 'Paytone One', sans-serif;
+}
+
+@mixin custom-border {
+    border: $border-width solid $border-color;
+}
+
+@mixin window-width {
+    max-width: 870px;
+    margin-left: auto;
+    margin-right: auto;
+    @include media-lg {
+        min-width: 870px;
+    }
+}

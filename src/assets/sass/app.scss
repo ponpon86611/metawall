@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+// components
+@import "./components/color";
+@import "./components/grid";
+@import "./components/mixin";
+
+// 必須放在自定義variable後，bootstrap顏色才能正確顯示
+@import '~bootstrap/scss/bootstrap';
+
+// components
+@import "./components/all";
