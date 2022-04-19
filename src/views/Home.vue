@@ -11,8 +11,8 @@
 					</div>
 					<div class="col-8">
 						<div class="input-group">
-							<input type="text" class="form-control rounded-0" placeholder="搜尋貼文" aria-describedby="search">
-							<button class="btn btn-primary shadow-none rounded-0 px-3 py-0 fs-5" type="button">
+							<input type="text" class="form-control rounded-0" placeholder="搜尋貼文" aria-describedby="search" v-model="keyword">
+							<button class="btn btn-primary shadow-none rounded-0 px-3 py-0 fs-5" type="button" @click="addPost(keyword)">
 								<i class="bi bi-search"></i>
 							</button>
 						</div>
@@ -108,11 +108,12 @@ export default {
 	},
 	data() {
 		return {
-			posts: []
+			posts: [],
+			keyword: ''
 		};
 	},
 	methods: {
-		addPost() {
+		addPost(keyword) {
 			this.posts = [
 				{
 					id: 1,
@@ -150,15 +151,15 @@ export default {
 					messages: []
 				}
 			];
-			(async () => {
+			(async (keyword) => {
+				keyword = keyword ? `?keyword=${keyword}` : '';
 				const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
-				const { data } = await fetch(`${baseUrl}/posts`, { method: 'GET' }).then(res => res.json());
+				const { data } = await fetch(`${baseUrl}/posts${keyword}`, { method: 'GET' }).then(res => res.json());
+				if (!data) return;
 				this.posts = data.map(({ content, image, userName, userPhoto, messages }) => {
-					return {
-						name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? []
-					};
+					return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [] };
 				});
-			})();
+			})(keyword);
 		},
 		getPictureUrl(path) {
 			try {
