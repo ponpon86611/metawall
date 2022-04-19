@@ -152,9 +152,8 @@ export default {
 				}
 			];
 			(async (keyword) => {
-				keyword = keyword ? `?keyword=${keyword}` : '';
 				const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
-				const { data } = await fetch(`${baseUrl}/posts${keyword}`, { method: 'GET' }).then(res => res.json());
+				const { data } = await fetch(`${baseUrl}/posts${keyword ? `?keyword=${keyword}` : ''}`, { method: 'GET' }).then(res => res.json());
 				if (!data) return;
 				this.posts = data.map(({ content, image, userName, userPhoto, messages }) => {
 					return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [] };
