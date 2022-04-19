@@ -1,5 +1,6 @@
 <template>
 	<div class="post-wrap d-flex flex-column">
+		<Loading :active.sync="isLoading"></Loading>
 		<div class="row">
 			<div class="col-12 col-md-7">
 				<h3 class="title py-3 border bg-white text-center mb-4">張貼動態</h3>
@@ -58,7 +59,8 @@ export default {
 				content: ''
 			},
 			imagePreview: '', // 圖片預覽
-			errorMessage: []
+			errorMessage: [], // 錯誤訊息
+			isLoading: false
 		};
 	},
 	methods: {
@@ -68,6 +70,7 @@ export default {
 			input.files = new DataTransfer().files; // 清空 input，避免重複選同一檔案無法觸發 change 事件
 		},
 		submitPost() {
+			this.isLoading = true;
 			fetch('https://stormy-crag-81873.herokuapp.com/posts', {
 				method: 'POST',
 				body: JSON.stringify(this.info)
@@ -88,9 +91,11 @@ export default {
 						}
 						this.errorMessage = errArr;
 					}
+					this.isLoading = false;
 				})
 				.catch(() => {
 					this.errorMessage = [ '系統異常' ];
+					this.isLoading = false;
 				});
 		}
 	}
