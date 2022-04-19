@@ -151,14 +151,16 @@ export default {
 					messages: []
 				}
 			];
-			(async (keyword) => {
+			this.posts.length = 0;
+			(async (array, keyword) => {
 				const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
 				const { data } = await fetch(`${baseUrl}/posts${keyword ? `?keyword=${keyword}` : ''}`, { method: 'GET' }).then(res => res.json());
 				if (!data) return;
-				this.posts = data.map(({ content, image, userName, userPhoto, messages }) => {
+				const _data = data.map(({ content, image, userName, userPhoto, messages }) => {
 					return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [] };
 				});
-			})(keyword);
+				array.push(..._data);
+			})(this.posts, keyword);
 		},
 		getPictureUrl(path) {
 			try {
