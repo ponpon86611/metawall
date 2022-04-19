@@ -150,9 +150,22 @@ export default {
 					messages: []
 				}
 			];
+			(async () => {
+				const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
+				const { data } = await fetch(`${baseUrl}/posts`, { method: 'GET' }).then(res => res.json());
+				this.posts = data.map(({ content, image, userName, userPhoto, messages }) => {
+					return {
+						name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? []
+					};
+				});
+			})();
 		},
 		getPictureUrl(path) {
-			return require(`@/assets/img/${path}`);
+			try {
+				return require(`@/assets/img/${path}`);
+			} catch (error) {
+				return path;
+			}
 		}
 	}
 };
