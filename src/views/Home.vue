@@ -156,8 +156,18 @@ export default {
 			const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
 			const { data } = await fetch(`${baseUrl}/posts${keyword ? `?keyword=${keyword}` : ''}`, { method: 'GET' }).then(res => res.json());
 			if (!data) return;
-			const _data = data.map(({ content, image, userName, userPhoto, messages }) => {
-				return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [] };
+			const _data = data.map(({ content, image, userName, userPhoto, messages, createdAt }) => {
+				return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [], date: createdAt };
+			}).map((item) => {
+				const timeZone = 8;
+				try {
+					const [ _date, _time ] = item.date.split('T');
+					const [ _hour, minute ] = _time.split(':');
+					item.date = `${_date.split('-').join('/')} ${Number(_hour) + timeZone}:${minute}`;
+				} catch (error) {
+					console.error(error);
+				}
+				return item;
 			});
 			this.posts.push(..._data);
 		},
