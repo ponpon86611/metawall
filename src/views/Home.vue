@@ -168,6 +168,9 @@ export default {
 				return path;
 			}
 		}
+	},
+	mounted() {
+		this.searchPosts();
 	}
 };
 </script>
