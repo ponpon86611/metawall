@@ -13,7 +13,8 @@
 						</div>
 						<div class="mb-3">
 							<label for="upload-file" class="btn form-label bg-black text-white shadow-none py-1 mb-0">上傳圖片</label>
-							<input class="form-control d-none" type="file" id="upload-file" accept="image/png, image/jpeg" @change="uploadFile()">
+							<input class="form-control d-none" type="file" id="upload-file" accept="image/png, image/jpeg"
+								ref="upload-file" @change="uploadFile()">
 						</div>
 						<div class="image-wrap border rounded overflow-hidden" v-show="imagePreview">
 							<img :src="imagePreview" class="w-100">
@@ -65,7 +66,7 @@ export default {
 	},
 	methods: {
 		uploadFile() { // TODO: 上傳檔案-先放預覽圖
-			const input = document.querySelector('#upload-file');
+			const input = this.$refs['upload-file'];
 			this.imagePreview = URL.createObjectURL(input.files[0]);
 			input.files = new DataTransfer().files; // 清空 input，避免重複選同一檔案無法觸發 change 事件
 		},
