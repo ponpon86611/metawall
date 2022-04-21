@@ -35,7 +35,7 @@
 					<div class="rounded-card card mb-3" v-for="post in posts" :key="post.id">
 						<div class="card-header bg-transparent pt-3 border-0">
 							<div class="d-flex align-items-center">
-								<img :src="getPictureUrl(post.headshot)" class="headshot">
+								<img :src="getPictureUrl(post.headshot)" class="headshot border rounded-circle">
 								<div class="d-flex flex-column ms-3">
 									<a href="#" class="fw-bold">{{ post.name }}</a>
 									<small class="text-black-50">{{ post.date }}</small>
@@ -44,7 +44,7 @@
 						</div>
 						<div class="card-body">
 							<p v-html="post.content" class="mb-3"></p>
-							<img :src="getPictureUrl(post.picture)" class="w-100 mb-3">
+							<img :src="getPictureUrl(post.picture)" class="w-100 mb-3 border rounded">
 							<a href="#" class="text-decoration-none" v-if="post.thumbs_up > 0">
 								<i class="bi bi-hand-thumbs-up text-primary fs-5"></i>
 								{{ post.thumbs_up }}
