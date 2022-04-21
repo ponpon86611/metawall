@@ -156,7 +156,7 @@ export default {
 			const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
 			const { data } = await fetch(`${baseUrl}/posts${keyword ? `?keyword=${keyword}` : ''}`, { method: 'GET' }).then(res => res.json());
 			if (!data) return;
-			const _data = data.map(({ content, image, userName, userPhoto, messages, createdAt }) => {
+			this.posts = data.map(({ content, image, userName, userPhoto, messages, createdAt }) => {
 				return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [], date: createdAt };
 			}).map((item) => {
 				const timeZone = 8;
@@ -169,7 +169,6 @@ export default {
 				}
 				return item;
 			});
-			this.posts.push(..._data);
 		},
 		getPictureUrl(path) {
 			try {
