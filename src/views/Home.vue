@@ -11,8 +11,8 @@
 					</div>
 					<div class="col-8">
 						<div class="input-group">
-							<input type="text" class="form-control rounded-0" placeholder="搜尋貼文" aria-describedby="search">
-							<button class="btn btn-primary shadow-none rounded-0 px-3 py-0 fs-5" type="button">
+							<input type="text" class="form-control rounded-0" placeholder="搜尋貼文" aria-describedby="search" v-model="keyword">
+							<button class="btn btn-primary shadow-none rounded-0 px-3 py-0 fs-5" type="button" @click="searchPosts(keyword)">
 								<i class="bi bi-search"></i>
 							</button>
 						</div>
@@ -108,7 +108,8 @@ export default {
 	},
 	data() {
 		return {
-			posts: []
+			posts: [],
+			keyword: ''
 		};
 	},
 	methods: {
@@ -151,9 +152,34 @@ export default {
 				}
 			];
 		},
+		async searchPosts(keyword) {
+			const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
+			const { data } = await fetch(`${baseUrl}/posts${keyword ? `?keyword=${keyword}` : ''}`, { method: 'GET' }).then(res => res.json());
+			if (!data) return;
+			this.posts = data.map(({ content, image, userName, userPhoto, messages, createdAt }) => {
+				return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [], date: createdAt };
+			}).map((item) => {
+				const timeZone = 8;
+				try {
+					const [ _date, _time ] = item.date.split('T');
+					const [ _hour, minute ] = _time.split(':');
+					item.date = `${_date.split('-').join('/')} ${Number(_hour) + timeZone}:${minute}`;
+				} catch (error) {
+					console.error(error);
+				}
+				return item;
+			});
+		},
 		getPictureUrl(path) {
-			return require(`@/assets/img/${path}`);
+			try {
+				return require(`@/assets/img/${path}`);
+			} catch (error) {
+				return path;
+			}
 		}
+	},
+	mounted() {
+		this.searchPosts();
 	}
 };
 </script>
