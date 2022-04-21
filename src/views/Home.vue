@@ -82,11 +82,6 @@
 						</div>
 					</div>
 				</template>
-				<!-- TODO: delete -->
-				<small class="d-block mt-3">
-					<a href="#" @click.prevent="addPost()" class="text-black-50 me-2">有貼文</a>
-					<a href="#" @click.prevent="posts = []" class="text-black-50">沒貼文</a>
-				</small>
 			</div>
 			<div class="col-12 col-md-5 d-none d-md-block">
 				<Sidebar></Sidebar>
