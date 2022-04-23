@@ -151,19 +151,16 @@ export default {
 			const baseUrl = 'https://stormy-crag-81873.herokuapp.com';
 			const { data } = await fetch(`${baseUrl}/posts${keyword ? `?keyword=${keyword}` : ''}`, { method: 'GET' }).then(res => res.json());
 			if (!data) return;
-			this.posts = data.map(({ content, image, userName, userPhoto, messages, createdAt }) => {
-				return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [], date: createdAt };
-			}).map((item) => {
-				const timeZone = 8;
-				try {
-					const [ _date, _time ] = item.date.split('T');
-					const [ _hour, minute ] = _time.split(':');
-					item.date = `${_date.split('-').join('/')} ${Number(_hour) + timeZone}:${minute}`;
-				} catch (error) {
-					console.error(error);
-				}
-				return item;
-			});
+			this.posts = data
+				.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+				.map(({ content, image, userName, userPhoto, messages, createdAt }) => {
+					return { name: userName, headshot: userPhoto, picture: image, content, messages: messages ?? [], date: createdAt };
+				})
+				.map((item) => {
+					const _date = new Date(item.date);
+					item.date = `${_date.toLocaleDateString()} ${_date.toTimeString().substring(0, 5)}`;
+					return item;
+				});
 		},
 		getPictureUrl(path) {
 			try {
